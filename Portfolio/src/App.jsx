@@ -1,4 +1,4 @@
-import React, { useState,useRef, useMemo, useEffect } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import gsap from 'gsap'
 import './App.css'
 import Home from './Home.jsx'
@@ -19,13 +19,16 @@ function App() {
 
 
   return (
-    <div className="h-screen w-screen bg-neutral-900">
+    <section className="h-screen w-screen bg-neutral-900">
 
       <Canvas
         orthographic
-        camera={{ position: [0, 0, 2.78], zoom: 200, near: 0.1, far: 1000 }}
+        camera={{ position: [0, 0, 3], zoom: 200, near: 0.1, far: 1000 }}
         gl={{ antialias: true }}
       >
+        <OrbitControls enableRotate={false} minZoom={200}
+          maxZoom={200}
+        />
         <GizmoHelper alignment="bottom-right" margin={[100, 100]}>
           <GizmoViewcube />
         </GizmoHelper>
@@ -34,7 +37,7 @@ function App() {
           <Bloom intensity={2} luminanceThreshold={1} luminanceSmoothing={0.1} radius={0.5} mipmapBlur={true} />
         </EffectComposer>
       </Canvas>
-    </div>
+    </section>
   )
 }
 
