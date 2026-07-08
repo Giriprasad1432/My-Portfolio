@@ -164,14 +164,14 @@ const Home = () => {
         </div>
       </section>
 
-      {/* <section
+      <section
       ref={projectRef}
       className="relative z-20  h-screen w-full flex items-center justify-center overflow-hidden"
     >
         <Canvas>
             <Projects />
         </Canvas>
-    </section> */}
+    </section>
     </main>
   );
 };
