@@ -1,6 +1,6 @@
 import gsap from "gsap";
 import { useGSAP } from '@gsap/react';
-import { useRef, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import * as THREE from 'three';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
@@ -42,6 +42,7 @@ const SceneManager = ({ containerRef, aboutRef }) => {
           scrub: 1,
           pin: true,
           invalidateOnRefresh: true,
+          anticipatePin: 1,
         },
         onUpdate: () => {
           camera.updateProjectionMatrix();
@@ -66,7 +67,11 @@ const Home = () => {
   const containerRef = useRef(null);
   const aboutRef = useRef(null);
   const aboutContentRef = useRef(null);
-  const projectRef=useRef(null);
+  const projectRef = useRef(null);
+  const progress = useRef({ value: 0 });
+  const extraRef = useRef(null);
+
+  const [showProjects, setShowProjects] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -85,9 +90,9 @@ const Home = () => {
 
   useGSAP(() => {
     if (!containerRef.current) return;
-    
+
     document.body.style.overflow = "hidden";
-    
+
     const introTl = gsap.timeline({
       onComplete: () => {
         document.body.style.overflow = "auto";
@@ -113,13 +118,41 @@ const Home = () => {
 
     gsap.to(aboutContentRef.current, {
       opacity: 0,
-      y: -100,
+      y: -200,
       scrollTrigger: {
         trigger: aboutRef.current,
         start: "top top",
         end: "+=100%",
         scrub: true,
+        invalidateOnRefresh: true,
       }
+    });
+
+    gsap.to(progress.current, {
+      value: 1,
+      scrollTrigger: {
+        trigger: extraRef.current,
+        start: "top top",
+        end: "+=100%",
+        scrub: true,
+        invalidateOnRefresh: true,
+      },
+      onUpdate: () => {
+        if (projectRef.current) {
+          projectRef.current.style.opacity = progress.current.value;
+          projectRef.current.style.pointerEvents = progress.current.value > 0.05 ? "auto" : "none";
+        }
+        console.log(progress.current.value);
+      }
+    });
+
+    ScrollTrigger.create({
+      trigger: extraRef.current,
+      start: "top bottom",
+      onEnter: () => setShowProjects(true),
+      onEnterBack: () => setShowProjects(true),
+      onLeaveBack: () => setShowProjects(false),
+      invalidateOnRefresh: true,
     });
 
   }, { scope: containerRef, dependencies: [aboutRef, aboutContentRef] });
@@ -127,7 +160,7 @@ const Home = () => {
   return (
     <main ref={containerRef} className="relative w-full bg-black select-none ">
       <div className="fixed top-0 left-0 w-full h-screen z-11 pointer-events-none" onWheel={(e) => e.stopPropagation()} >
-        <Canvas orthographic camera={{ position:[0,0,3], zoom: 200, near: 0.1, far: 1000 }} gl={{ antialias: true }} >
+        <Canvas orthographic camera={{ position: [0, 0, 3], zoom: 200, near: 0.1, far: 1000 }} gl={{ antialias: true }} >
           <SceneManager containerRef={containerRef} aboutRef={aboutRef} />
           <EffectComposer frameBufferType={THREE.HalfFloatType}>
             <Bloom intensity={2} luminanceThreshold={1} luminanceSmoothing={0.1} radius={0.5} mipmapBlur={true} />
@@ -164,14 +197,19 @@ const Home = () => {
         </div>
       </section>
 
-      <section
-      ref={projectRef}
-      className="relative z-20  h-screen w-full flex items-center justify-center overflow-hidden"
-    >
-        <Canvas>
-            <Projects />
-        </Canvas>
-    </section>
+      <div ref={extraRef} className="relative z-0 h-screen w-full" aria-hidden="true" />
+
+      {showProjects && (
+        <section
+          ref={projectRef}
+          style={{ opacity: 0, pointerEvents: "none" }}
+          className="fixed top-0 left-0 z-20 h-screen w-full bg-transparent flex items-center justify-center overflow-hidden"
+        >
+          <Canvas >
+            <Projects progress={progress} />
+          </Canvas>
+        </section>
+      )}
     </main>
   );
 };
