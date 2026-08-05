@@ -1,0 +1,15 @@
+{
+  "builds": [
+    {
+      "src": "Portfolio/package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "Portfolio/dist" }
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/Portfolio/index.html"
+    }
+  ]
+}
