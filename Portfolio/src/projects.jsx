@@ -1,16 +1,14 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { OrbitControls, Html } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { Features } from 'tailwindcss'
 
-const Projects = ({ progress,idx }) => {
+const Projects = ({ progress, idx }) => {
   const domRefs = useRef([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
-
   const projects = [
-    { id: 1, title: "AI Note Saver", description: "AI-powered note management application that lets users create, organize, summarize, rewrite, and enhance notes using Llama 3.3 AI.", features: ["🔐 JWT Auth", "🤖 AI Suggestions", "✏️ AI Rewrite", "📝 Note Management", "🌙 Light/Dark Mode", "📱 Responsive UI",], techstack: ["React", "Express.js", "Node.js", "Tailwind CSS", "Groq API", "Vercel AI SDK", "Llama 3.3",], github:"https://github.com/Giriprasad1432/AI-Notes-Workspace", live:"https://ai-notes-workspace-flax.vercel.app/" },
+    { id: 1, title: "AI Note Saver", description: "AI-powered note management application that lets users create, organize, summarize, rewrite, and enhance notes using Llama 3.3 AI.", features: ["🔐 JWT Auth", "🤖 AI Suggestions", "✏️ AI Rewrite", "📝 Note Management", "🌙 Light/Dark Mode", "📱 Responsive UI",], techstack: ["React", "Express.js", "Node.js", "Tailwind CSS", "Groq API", "Vercel AI SDK", "Llama 3.3",], github:"https://github.com", live:"https://vercel.app" },
     {
       id: 2,
       title: "Blog Application",
@@ -19,7 +17,6 @@ const Projects = ({ progress,idx }) => {
       techstack: ["React", "TanStack Query", "Tailwind CSS", "JavaScript"],
       github:"", live:""
     },
-
     {
       id: 3,
       title: "Dynamic Career Guidance",
@@ -28,7 +25,6 @@ const Projects = ({ progress,idx }) => {
       techstack: ["Python", "FastAPI", "Groq API", "Llama 3.3", "HTML", "CSS", "JavaScript"],
       github:"", live:""
     },
-
     {
       id: 4,
       title: "DTI Project",
@@ -37,20 +33,25 @@ const Projects = ({ progress,idx }) => {
       techstack: ["MongoDB", "Express.js", "React", "Node.js", "Tailwind CSS", "Blender", "Three.js"],
       github:"", live:""
     }
-
   ];
 
+  const visibleCards = projects.slice(idx, idx + 3);
+  
+  useEffect(() => {
+    domRefs.current = domRefs.current.slice(0, visibleCards.length);
+  }, [idx, visibleCards.length]);
 
   useFrame(() => {
     if (!progress.current) return;
 
     const currentProg = progress.current.value;
 
-    const targetRotateX = 90 - (currentProg * 90);
+    const targetRotateX = 0;
 
     domRefs.current.forEach((el) => {
       if (el && currentProg < 0.95) {
-        el.style.transform = `rotateX(${targetRotateX}deg)`;
+  
+        el.style.transform = `perspective(600px) rotateX(${targetRotateX}deg)`;
       }
     });
   });
@@ -83,11 +84,10 @@ const Projects = ({ progress,idx }) => {
 
   return (
     <>
-      {projects.slice(idx,idx+3).map((p, index) => (
+      {visibleCards.map((p, index) => (
         <group key={p.id} position={[(index - 1) * 3.2, 0, 2]}>
           <directionalLight position={[0, 0, 2]} intensity={1} />
           <Html transform distanceFactor={2} scale={1} position={[0, 0, 0]}>
-            
             <div
               ref={(el) => (domRefs.current[index] = el)}
               onMouseMove={(e) => tilt(e, index)}
@@ -100,13 +100,11 @@ const Projects = ({ progress,idx }) => {
                 setHoveredIndex(null)
                 resetTilt(e, index)
               }}
-
               style={{
                 transformStyle: "preserve-3d",
               }}
               className="text-center text-white group relative overflow-hidden backface-hidden w-[500px] h-[600px] flex items-center flex-col p-4 border border-cyan-400/30 bg-slate-800 rounded-3xl shadow-xl shadow-cyan-500/10"
             >
-              
               <div className="absolute inset-0 bg-gradient-to-br from-indigo-700/80 via-slate-800/60 to-cyan-700/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
               <h1 className="relative z-10 text-4xl font-bold pointer-events-none bg-gradient-to-r from-indigo-300 via-violet-300 to-cyan-300 bg-clip-text text-transparent leading-tight ">{p.title}</h1>
               <div className='py-5 px-2 w-full max-h-[150px] overflow-clip pointer-events-none'>

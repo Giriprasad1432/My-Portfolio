@@ -7,7 +7,7 @@ import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { ParticleCloud } from './Anim3d.jsx';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Projects from "./projects.jsx";
-import {ArrowLeft,ArrowRight} from 'lucide-react'
+import {ChevronRight,ChevronLeft} from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -161,16 +161,14 @@ const Home = () => {
 
   const handleLeft=()=>{
     if(idx==0)
-      rerturn;
-    else 
-      setIdx(idx-1)
+      return;
+    setIdx(idx-1)
   }
   
   const handleRight=()=>{
     if(idx+3>=4)
       return;
-    else
-      setIdx(idx+1)
+    setIdx(idx+1)
   }
 
   return (
@@ -221,8 +219,8 @@ const Home = () => {
           style={{ opacity: 0, pointerEvents: "none" }}
           className="fixed top-0 left-0 z-20 h-screen w-full bg-transparent flex items-center justify-center overflow-hidden"
         >
-          <ArrowLeft onClick={handleLeft} className='z-10 absolute left-1 bg-amber-50 rounded-full'></ArrowLeft>
-          <ArrowRight onClick={handleRight} className='z-10 absolute right-1 bg-amber-50 rounded-full'></ArrowRight>
+          <ChevronLeft onClick={handleLeft} className='z-10 absolute left-1 bg-white/30 rounded-full text-black '></ChevronLeft>
+          <ChevronRight onClick={handleRight} className='z-10 absolute right-1 bg-white/30 text-black rounded-full'></ChevronRight>
           <Canvas >
             <Projects progress={progress} idx={idx} />
           </Canvas>
