@@ -35,11 +35,19 @@ const Projects = ({ progress, idx }) => {
     }
   ];
 
-  const visibleCards = projects.slice(idx, idx + 3);
-  
+  const carouselRef = useRef();
+
+  useGSAP(() => {
+    gsap.to(carouselRef.current.position, {
+      x: -idx * 3.2,
+      duration: 0.8,
+      ease: "power2.out"
+    });
+  }, [idx]);
+
   useEffect(() => {
-    domRefs.current = domRefs.current.slice(0, visibleCards.length);
-  }, [idx, visibleCards.length]);
+    domRefs.current = domRefs.current.slice(0, projects.length);
+  }, [projects.length]);
 
   useFrame(() => {
     if (!progress.current) return;
@@ -84,58 +92,60 @@ const Projects = ({ progress, idx }) => {
 
   return (
     <>
-      {visibleCards.map((p, index) => (
-        <group key={p.id} position={[(index - 1) * 3.2, 0, 2]}>
-          <directionalLight position={[0, 0, 2]} intensity={1} />
-          <Html transform distanceFactor={2} scale={1} position={[0, 0, 0]}>
-            <div
-              ref={(el) => (domRefs.current[index] = el)}
-              onMouseMove={(e) => tilt(e, index)}
-              onMouseEnter={() => {
-                setHoveredIndex(index);
-                const el = domRefs.current[index];
-                if (el) gsap.set(el, { rotateX: 0, rotateY: 0, transformPerspective: 600 });
-              }}
-              onMouseLeave={(e) => {
-                setHoveredIndex(null)
-                resetTilt(e, index)
-              }}
-              style={{
-                transformStyle: "preserve-3d",
-              }}
-              className="text-center text-white group relative overflow-hidden backface-hidden w-[500px] h-[600px] flex items-center flex-col p-4 border border-cyan-400/30 bg-slate-800 rounded-3xl shadow-xl shadow-cyan-500/10"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-700/80 via-slate-800/60 to-cyan-700/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-              <h1 className="relative z-10 text-4xl font-bold pointer-events-none bg-gradient-to-r from-indigo-300 via-violet-300 to-cyan-300 bg-clip-text text-transparent leading-tight ">{p.title}</h1>
-              <div className='py-5 px-2 w-full max-h-[150px] overflow-clip pointer-events-none'>
-                <p className={`relative z-10 text-lg line-clamp-3 leading-normal transition-colors duration-700 ${hoveredIndex === index ? "text-white" : "text-slate-300"}`}>
-                  {p.description}
-                </p>
+      <group ref={carouselRef}>
+        {projects.map((p, index) => (
+          <group key={p.id} position={[(index - 1) * 3.2, 0, 2]}>
+            <directionalLight position={[0, 0, 2]} intensity={1} />
+            <Html transform distanceFactor={2} scale={1} position={[0, 0, 0]}>
+              <div
+                ref={(el) => (domRefs.current[index] = el)}
+                onMouseMove={(e) => tilt(e, index)}
+                onMouseEnter={() => {
+                  setHoveredIndex(index);
+                  const el = domRefs.current[index];
+                  if (el) gsap.set(el, { rotateX: 0, rotateY: 0, transformPerspective: 600 });
+                }}
+                onMouseLeave={(e) => {
+                  setHoveredIndex(null)
+                  resetTilt(e, index)
+                }}
+                style={{
+                  transformStyle: "preserve-3d",
+                }}
+                className="text-center text-white group relative overflow-hidden backface-hidden w-[500px] h-[600px] flex items-center flex-col p-4 border border-cyan-400/30 bg-slate-800 rounded-3xl shadow-xl shadow-cyan-500/10"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-700/80 via-slate-800/60 to-cyan-700/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                <h1 className="relative z-10 text-4xl font-bold pointer-events-none bg-gradient-to-r from-indigo-300 via-violet-300 to-cyan-300 bg-clip-text text-transparent leading-tight ">{p.title}</h1>
+                <div className='py-5 px-2 w-full max-h-[150px] overflow-clip pointer-events-none'>
+                  <p className={`relative z-10 text-lg line-clamp-3 leading-normal transition-colors duration-700 ${hoveredIndex === index ? "text-white" : "text-slate-300"}`}>
+                    {p.description}
+                  </p>
+                </div>
+                <h3 className='relative z-10 text-xl font-semibold pointer-events-none w-full text-left text-indigo-300'>Features:</h3>
+                <ul className="flex py-2 px-2 flex-wrap gap-3 relative z-20">
+                  {p.features.map((feature, i) => (
+                    <li key={i} className={`relative z-10 rounded-full px-3 py-1 text-base transition-all duration-700 ease-out border ${hoveredIndex === index ? "border-cyan-400/60 bg-cyan-500/20 text-white" : "border-slate-600 text-slate-300"}`}>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                <h3 className='relative z-10 text-xl font-semibold pointer-events-none w-full text-left pt-5 text-cyan-300'>Tech Stack:</h3>
+                <ul className="flex flex-wrap gap-x-8 pt-3 pl-8 list-disc relative z-20 PB-3">
+                  {p.techstack.map((tech, i) => (
+                    <li key={i} className={`relative z-10 text-base transition-all duration-700 ${hoveredIndex === index ? "text-cyan-300" : "text-slate-300"}`}>
+                      {tech}
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex justify-between w-full px-12 py-2 z-20 absolute bottom-8 ">
+                  <button className="cursor-pointer relative z-10 border border-white/10 bg-white/10 hover:bg-white/20 text-white rounded-3xl px-6 py-2 text-base font-medium transition-all duration-300 backdrop-blur-sm"><a href={p.github} >Github</a></button>
+                  <button className="cursor-pointer relative z-10 border border-indigo-400/50 bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-400 hover:to-cyan-400 text-white rounded-3xl px-6 py-2 text-base font-medium transition-all duration-300 shadow-lg shadow-indigo-500/30"><a href={p.live} >Live</a></button>
+                </div>
               </div>
-              <h3 className='relative z-10 text-xl font-semibold pointer-events-none w-full text-left text-indigo-300'>Features:</h3>
-              <ul className="flex py-2 px-2 flex-wrap gap-3 relative z-20">
-                {p.features.map((feature, i) => (
-                  <li key={i} className={`relative z-10 rounded-full px-3 py-1 text-base transition-all duration-700 ease-out border ${hoveredIndex === index ? "border-cyan-400/60 bg-cyan-500/20 text-white" : "border-slate-600 text-slate-300"}`}>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <h3 className='relative z-10 text-xl font-semibold pointer-events-none w-full text-left pt-5 text-cyan-300'>Tech Stack:</h3>
-              <ul className="flex flex-wrap gap-x-8 pt-3 pl-8 list-disc relative z-20 PB-3">
-                {p.techstack.map((tech, i) => (
-                  <li key={i} className={`relative z-10 text-base transition-all duration-700 ${hoveredIndex === index ? "text-cyan-300" : "text-slate-300"}`}>
-                    {tech}
-                  </li>
-                ))}
-              </ul>
-              <div className="flex justify-between w-full px-12 py-2 z-20 absolute bottom-8 ">
-                <button className="cursor-pointer relative z-10 border border-white/10 bg-white/10 hover:bg-white/20 text-white rounded-3xl px-6 py-2 text-base font-medium transition-all duration-300 backdrop-blur-sm"><a href={p.github} >Github</a></button>
-                <button className="cursor-pointer relative z-10 border border-indigo-400/50 bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-400 hover:to-cyan-400 text-white rounded-3xl px-6 py-2 text-base font-medium transition-all duration-300 shadow-lg shadow-indigo-500/30"><a href={p.live} >Live</a></button>
-              </div>
-            </div>
-          </Html>
-        </group>
-      ))}
+            </Html>
+          </group>
+        ))}
+      </group>
       <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
     </>
   );

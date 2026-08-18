@@ -156,8 +156,9 @@ const Home = ({ startAnimation }) => {
       },
       onUpdate: () => {
         if (projectRef.current) {
-          projectRef.current.style.opacity = progress.current.value;
-          projectRef.current.style.pointerEvents = progress.current.value > 0.05 ? "auto" : "none";
+          const val = progress.current.value;
+          projectRef.current.style.opacity = val;
+          projectRef.current.style.display = val > 0.05 ? "flex" : "none";
         }
         console.log(progress.current.value);
       }
@@ -208,11 +209,11 @@ const Home = ({ startAnimation }) => {
 
         if (projectRef.current) {
           projectRef.current.style.opacity = projectOpacity;
-          projectRef.current.style.pointerEvents = projectOpacity > 0.05 ? "auto" : "none";
+          projectRef.current.style.display = projectOpacity > 0.05 ? "flex" : "none";
         }
         if (skillsRef.current) {
           skillsRef.current.style.opacity = skillsOpacity;
-          skillsRef.current.style.pointerEvents = skillsOpacity > 0.05 ? "auto" : "none";
+          skillsRef.current.style.display = skillsOpacity > 0.05 ? "flex" : "none";
         }
       }
     });
@@ -274,27 +275,27 @@ const Home = ({ startAnimation }) => {
       </section>
 
       <div ref={extraRef} className="relative z-0 h-screen w-full" aria-hidden="true" />
-      <div ref={skillsSpacerRef} className="relative z-0 w-full" style={{ height: '300vh' }} aria-hidden="true" />
-      <div className="relative z-0 h-screen w-full" aria-hidden="true" />
+      <div ref={skillsSpacerRef} className="relative z-0 w-full" style={{ height: '150vh' }} aria-hidden="true" />
+      <div className="relative z-0 h-[50vh] w-full" aria-hidden="true" />
 
       {showProjects && (
         <section
           ref={projectRef}
-          style={{ opacity: 0, pointerEvents: "none" }}
+          style={{ display: "none" }}
           className="fixed top-0 left-0 z-20 h-screen w-full bg-transparent flex items-center justify-center overflow-hidden"
         >
-          <ChevronLeft onClick={handleLeft} className='z-10 absolute left-1 bg-white/30 rounded-full text-black '></ChevronLeft>
-          <ChevronRight onClick={handleRight} className='z-10 absolute right-1 bg-white/30 text-black rounded-full'></ChevronRight>
           <Canvas >
             <Projects progress={progress} idx={idx} />
           </Canvas>
+          <ChevronLeft onClick={handleLeft} className='z-30 absolute left-4 bg-white/30 hover:bg-white/50 text-black rounded-full w-10 h-10 p-2 cursor-pointer transition-all duration-300'></ChevronLeft>
+          <ChevronRight onClick={handleRight} className='z-30 absolute right-4 bg-white/30 hover:bg-white/50 text-black rounded-full w-10 h-10 p-2 cursor-pointer transition-all duration-300'></ChevronRight>
         </section>
       )}
 
       {showSkills && (
         <section
           ref={skillsRef}
-          style={{ opacity: 0, pointerEvents: "none" }}
+          style={{ display: "none" }}
           className="fixed top-0 left-0 z-20 h-screen w-full bg-transparent flex flex-col items-center justify-center overflow-hidden"
         >
           <div className="w-full h-full">
