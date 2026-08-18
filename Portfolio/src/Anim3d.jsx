@@ -6,11 +6,11 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
-export function ParticleCloud({ containerRef }) {
+export function ParticleCloud({ containerRef, startAnimation }) {
     const pointsRef = useRef();
     const texture = useTexture("particles.png");
     const { scene } = useGLTF("heroText1.glb");
-    const totalParticles = 20000;
+    const totalParticles = 10000;
 
     const shape1 = useMemo(() => new Float32Array(totalParticles * 3), [totalParticles]);
     const shape2 = useMemo(() => new Float32Array(totalParticles * 3), [totalParticles]);
@@ -83,7 +83,15 @@ export function ParticleCloud({ containerRef }) {
     }, [scene, totalParticles, shape1, shape2, homeShape, textMesh]);
 
     useGSAP(() => {
-        const tl = gsap.timeline();
+        if (!startAnimation) return;
+        const tl = gsap.timeline({
+            onComplete: () => {
+                
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('particlesReady'));
+                }, 1500);
+            }
+        });
 
         tl.to(morphProgress.current, {
             value: 1,
@@ -94,8 +102,8 @@ export function ParticleCloud({ containerRef }) {
         if (!containerRef || !containerRef.current) return;
 
         gsap.to(colorState.current, {
-            r: 6.0,
-            g: 0.5,
+            r: 0.5,
+            g: 1.8,
             b: 9.0,
             scrollTrigger: {
                 trigger: containerRef.current,
@@ -104,7 +112,7 @@ export function ParticleCloud({ containerRef }) {
                 scrub: 1
             }
         });
-    }, [shape1, shape2, homeShape, containerRef]);
+    }, [startAnimation, shape1, shape2, homeShape, containerRef]);
 
     useFrame((state) => {
         if (!pointsRef.current || !pointsRef.current.material) return;

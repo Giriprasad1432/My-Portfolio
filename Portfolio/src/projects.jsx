@@ -76,7 +76,7 @@ const Projects = ({ progress, idx }) => {
   };
 
   const resetTilt = (e, index) => {
-    if (e.currentTarget.contains(e.relatedTarget)) return;
+    if (e.relatedTarget && e.currentTarget.contains(e.relatedTarget)) return;
     const el = domRefs.current[index];
     if (!el || progress.current.value < 0.95) return;
     gsap.to(el, { rotateX: 0, rotateY: 0, duration: 1, ease: "power2.out" });
