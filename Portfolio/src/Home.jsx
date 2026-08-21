@@ -287,8 +287,8 @@ const Home = ({ startAnimation }) => {
           <Canvas >
             <Projects progress={progress} idx={idx} />
           </Canvas>
-          <ChevronLeft onClick={handleLeft} className='z-30 absolute left-4 bg-white/30 hover:bg-white/50 text-black rounded-full w-10 h-10 p-2 cursor-pointer transition-all duration-300'></ChevronLeft>
-          <ChevronRight onClick={handleRight} className='z-30 absolute right-4 bg-white/30 hover:bg-white/50 text-black rounded-full w-10 h-10 p-2 cursor-pointer transition-all duration-300'></ChevronRight>
+          <ChevronLeft onClick={handleLeft} className='left-0 text-gray-500 size-[40px] z-30 absolute md:left-4 hover:bg-white text-black rounded-full md:w-10 md:h-10 p-2 cursor-pointer transition-all duration-300'></ChevronLeft>
+          <ChevronRight onClick={handleRight} className='right-0 text-gray-500 size-[40px] z-30 absolute md:right-4 hover:bg-white text-black rounded-full md:w-10 md:h-10 p-2 cursor-pointer transition-all duration-300'></ChevronRight>
         </section>
       )}
 

@@ -18,6 +18,8 @@ const SKILLS_DATA = [
   { name: "Git", category: "DevOps", icon: "📦", glow: "shadow-red-500/50" }
 ];
 
+const isMobile = window.innerWidth < 768;
+
 function SkillBadge({ name, category, icon, glow }) {
   const [hovered, setHovered] = useState(false);
 
@@ -49,7 +51,11 @@ function SkillsSphere({ radius = 4.2 }) {
     for (let i = 0; i < count; i++) {
       const phi = Math.acos(1 - 2 * (i + 0.5) / count);
       const theta = Math.PI * (1 + Math.sqrt(5)) * i;
-      const x = (radius+4) * Math.cos(theta) * Math.sin(phi);
+      let x;
+      if(!isMobile)
+          x=(radius+4) * Math.cos(theta) * Math.sin(phi);
+      else 
+        x=(radius-2) * Math.cos(theta) * Math.sin(phi);
       const y = radius * Math.sin(theta) * Math.sin(phi);
       const z = radius * Math.cos(phi);
       tempPoints.push(new THREE.Vector3(x, y, z));

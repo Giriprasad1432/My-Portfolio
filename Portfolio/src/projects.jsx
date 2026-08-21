@@ -112,7 +112,7 @@ const Projects = ({ progress, idx }) => {
                 style={{
                   transformStyle: "preserve-3d",
                 }}
-                className="text-center text-white group relative overflow-hidden backface-hidden w-[500px] h-[600px] flex items-center flex-col p-4 border border-cyan-400/30 bg-slate-800 rounded-3xl shadow-xl shadow-cyan-500/10"
+                className="text-center text-white group relative overflow-hidden backface-hidden w-[420px] h-[600px]  md:w-[500px] md:h-[600px] flex items-center flex-col p-4 border border-cyan-400/30 bg-slate-800 rounded-3xl shadow-xl shadow-cyan-500/10"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-700/80 via-slate-800/60 to-cyan-700/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                 <h1 className="relative z-10 text-4xl font-bold pointer-events-none bg-gradient-to-r from-indigo-300 via-violet-300 to-cyan-300 bg-clip-text text-transparent leading-tight ">{p.title}</h1>
