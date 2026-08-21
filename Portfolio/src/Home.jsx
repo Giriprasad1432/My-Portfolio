@@ -247,7 +247,7 @@ const Home = ({ startAnimation }) => {
 
       <section className="relative z-10 h-screen w-full flex flex-col justify-center items-center overflow-hidden">
         <div ref={introWrapperRef} className="relative w-full h-full flex flex-col justify-center items-center">
-          <div ref={texRef} className="z-1 absolute left-1/2 -translate-x-1/2 top-[62%] text-xl font-medium tracking-[0.5em] text-blue-200/80 uppercase whitespace-nowrap" >
+          <div ref={texRef} className="z-1 absolute md:left-1/2 -translate-x-1/2 top-[62%] md:text-xl font-medium tracking-[0.5] md:tracking-[0.5em] text-blue-200/80 uppercase whitespace-nowrap" >
             <span className="inline-block transition duration-300 hover:scale-[1.15]">MERN </span>{" "}
             <span className="inline-block transition duration-300 hover:scale-[1.15]">Stack </span>{" "}
             <span className="inline-block transition duration-300 hover:scale-[1.15]">Developer </span>{" "}

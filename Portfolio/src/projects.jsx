@@ -6,6 +6,7 @@ import { useGSAP } from '@gsap/react'
 
 const Projects = ({ progress, idx }) => {
   const domRefs = useRef([]);
+  const isMobileRef = useRef(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const projects = [
     { id: 1, title: "AI Note Saver", description: "AI-powered note management application that lets users create, organize, summarize, rewrite, and enhance notes using Llama 3.3 AI.", features: ["🔐 JWT Auth", "🤖 AI Suggestions", "✏️ AI Rewrite", "📝 Note Management", "🌙 Light/Dark Mode", "📱 Responsive UI",], techstack: ["React", "Express.js", "Node.js", "Tailwind CSS", "Groq API", "Vercel AI SDK", "Llama 3.3",], github:"https://github.com", live:"https://vercel.app" },
@@ -49,6 +50,17 @@ const Projects = ({ progress, idx }) => {
     domRefs.current = domRefs.current.slice(0, projects.length);
   }, [projects.length]);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(max-width: 768px)');
+    const setMobile = (ev) => {
+      isMobileRef.current = ev.matches;
+    };
+    setMobile(mq);
+    mq.addEventListener?.('change', setMobile);
+    return () => mq.removeEventListener?.('change', setMobile);
+  }, []);
+
   useFrame(() => {
     if (!progress.current) return;
 
@@ -65,6 +77,8 @@ const Projects = ({ progress, idx }) => {
   });
 
   const tilt = (e, index) => {
+    // disable tilt on mobile
+    if (isMobileRef.current) return;
     const el = domRefs.current[index];
     if (!el || progress.current.value < 0.95) return;
 
@@ -84,6 +98,7 @@ const Projects = ({ progress, idx }) => {
   };
 
   const resetTilt = (e, index) => {
+    if (isMobileRef.current) return;
     if (e.relatedTarget && e.currentTarget.contains(e.relatedTarget)) return;
     const el = domRefs.current[index];
     if (!el || progress.current.value < 0.95) return;
