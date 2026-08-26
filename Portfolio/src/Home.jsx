@@ -77,6 +77,7 @@ const Home = ({ startAnimation }) => {
   const skillsRef = useRef(null);
   const skillsProgress = useRef({ value: 0 });
   const [idx,setIdx]=useState(0);
+  const mobileNameRef = useRef(null);
 
   const [showProjects, setShowProjects] = useState(false);
   const [showSkills, setShowSkills] = useState(false);
@@ -110,7 +111,8 @@ const Home = ({ startAnimation }) => {
 
     const introTl = gsap.timeline();
 
-    introTl.fromTo(texRef.current, { x: -200, opacity: 0 }, { x: 0, opacity: 1, duration: 1, ease: "power2.inOut" }, 4.0);
+    introTl.fromTo(mobileNameRef.current, { opacity: 0, y: 30, xPercent: -50 }, { opacity: 1, y: 0, xPercent: -50, duration: 1.5, ease: "power3.out" }, 3.5);
+    introTl.fromTo(texRef.current, { x: -200, xPercent: -50, opacity: 0 }, { x: 0, xPercent: -50, opacity: 1, duration: 1, ease: "power2.inOut" }, 4.0);
     introTl.fromTo(tex1Ref.current, { opacity: 0 }, { opacity: 1, duration: 2, ease: "power2.inOut" }, 4.3);
     introTl.fromTo(blurRef.current, { opacity: 0 }, { opacity: 1, duration: 2, ease: "power2.inOut" }, 3.5);
 
@@ -247,7 +249,10 @@ const Home = ({ startAnimation }) => {
 
       <section className="relative z-10 h-screen w-full flex flex-col justify-center items-center overflow-hidden">
         <div ref={introWrapperRef} className="relative w-full h-full flex flex-col justify-center items-center">
-          <div ref={texRef} className="z-1 absolute md:left-1/2 -translate-x-1/2 top-[62%] md:text-xl font-medium tracking-[0.5] md:tracking-[0.5em] text-blue-200/80 uppercase whitespace-nowrap" >
+          <h1 ref={mobileNameRef} className="z-1 absolute left-1/2 -translate-x-1/2 top-[52%] text-3xl sm:text-4xl font-black tracking-[0.2em] text-white uppercase whitespace-nowrap md:hidden text-center bg-gradient-to-r from-blue-100 via-white to-blue-200 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(147,197,253,0.3)]">
+            GIRIPRASAD ALLU
+          </h1>
+          <div ref={texRef} className="z-1 absolute left-1/2 -translate-x-1/2 top-[62%] text-xs sm:text-sm md:text-xl font-medium tracking-[0.2em] md:tracking-[0.5em] text-blue-200/80 uppercase whitespace-nowrap" >
             <span className="inline-block transition duration-300 hover:scale-[1.15]">MERN </span>{" "}
             <span className="inline-block transition duration-300 hover:scale-[1.15]">Stack </span>{" "}
             <span className="inline-block transition duration-300 hover:scale-[1.15]">Developer </span>{" "}
@@ -255,7 +260,7 @@ const Home = ({ startAnimation }) => {
             <span className="inline-block transition duration-300 hover:scale-[1.15]">AI </span>{" "}
             <span className="inline-block transition duration-300 hover:scale-[1.15]">Enthusiast </span>
           </div>
-          <div ref={tex1Ref} className="z-1 transition hover:scale-[1.1] duration-300 hover:text-white/70 absolute left-1/2 -translate-x-1/2 top-[68%] text-sm text-white/50 tracking-wide whitespace-nowrap" >
+          <div ref={tex1Ref} className="z-1 transition hover:scale-[1.1] duration-300 hover:text-white/70 absolute left-1/2 -translate-x-1/2 top-[68%] text-[10px] sm:text-sm text-white/50 tracking-wide whitespace-nowrap" >
             crafting intelligent apps with 3D experiences
           </div>
           <div ref={blurRef} className="absolute z-[-5] w-100 h-100 rounded-full blur-3xl bg-violet-400/10 bottom-0 left-1/2 -translate-x-1/2"></div>
@@ -282,13 +287,13 @@ const Home = ({ startAnimation }) => {
         <section
           ref={projectRef}
           style={{ display: "none" }}
-          className="fixed top-0 left-0 z-20 h-screen w-full bg-transparent flex items-center justify-center overflow-hidden"
+          className="fixed top-0 left-0 z-20 h-screen w-full bg-transparent flex items-center justify-center overflow-hidden pointer-events-none md:pointer-events-auto"
         >
-          <Canvas >
+          <Canvas className="pointer-events-none md:pointer-events-auto">
             <Projects progress={progress} idx={idx} />
           </Canvas>
-          <ChevronLeft onClick={handleLeft} className='left-0 text-gray-500 size-[40px] z-30 absolute md:left-4 hover:bg-white text-black rounded-full md:w-10 md:h-10 p-2 cursor-pointer transition-all duration-300'></ChevronLeft>
-          <ChevronRight onClick={handleRight} className='right-0 text-gray-500 size-[40px] z-30 absolute md:right-4 hover:bg-white text-black rounded-full md:w-10 md:h-10 p-2 cursor-pointer transition-all duration-300'></ChevronRight>
+          <ChevronLeft onClick={handleLeft} className='left-0 text-gray-500 size-[40px] z-30 absolute md:left-4 hover:bg-white text-black rounded-full md:w-10 md:h-10 p-2 cursor-pointer transition-all duration-300 pointer-events-auto'></ChevronLeft>
+          <ChevronRight onClick={handleRight} className='right-0 text-gray-500 size-[40px] z-30 absolute md:right-4 hover:bg-white text-black rounded-full md:w-10 md:h-10 p-2 cursor-pointer transition-all duration-300 pointer-events-auto'></ChevronRight>
         </section>
       )}
 
@@ -296,17 +301,15 @@ const Home = ({ startAnimation }) => {
         <section
           ref={skillsRef}
           style={{ display: "none" }}
-          className="fixed top-0 left-0 z-20 h-screen w-full bg-transparent flex flex-col items-center justify-center overflow-hidden"
+          className="fixed top-0 left-0 z-20 h-screen w-full bg-transparent flex flex-col items-center justify-center overflow-hidden pointer-events-none md:pointer-events-auto"
         >
-          <div className="w-full h-full">
-            <Canvas camera={{ position: [0, 0, 8.5], fov: 60 }}>
-              <Skills />
+          <div className="w-full h-full pointer-events-none md:pointer-events-auto">
+            <Canvas camera={{ position: [0, 0, 8.5], fov: 60 }} className="pointer-events-none md:pointer-events-auto">
+              <Skills progress={skillsProgress} />
             </Canvas>
           </div>
         </section>
       )}
-
-      
     </main>
   );
 };

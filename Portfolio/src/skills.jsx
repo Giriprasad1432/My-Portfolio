@@ -27,7 +27,7 @@ function SkillBadge({ name, category, icon, glow }) {
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className={`flex flex-col items-center justify-center p-3 w-32 h-20 rounded-2xl border transition-all duration-500 select-none cursor-pointer text-center backdrop-blur-md ${
+      className={`pointer-events-auto flex flex-col items-center justify-center p-3 w-32 h-20 rounded-2xl border transition-all duration-500 select-none cursor-pointer text-center backdrop-blur-md ${
         hovered
           ? `bg-slate-900/90 border-cyan-400 scale-110 shadow-lg ${glow}`
           : 'bg-slate-950/40 border-white/10'
@@ -42,7 +42,7 @@ function SkillBadge({ name, category, icon, glow }) {
   );
 }
 
-function SkillsSphere({ radius = 4.2 }) {
+function SkillsSphere({ radius = 4.2, progress }) {
   const groupRef = useRef();
 
   const points = useMemo(() => {
@@ -65,8 +65,9 @@ function SkillsSphere({ radius = 4.2 }) {
 
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.03;
-      groupRef.current.rotation.x = Math.sin(state.clock.getElapsedTime() * 0.08) * 0.04;
+      const scrollVal = progress && progress.current ? progress.current.value : 0;
+      groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.03 + scrollVal * Math.PI * 2;
+      groupRef.current.rotation.x = Math.sin(state.clock.getElapsedTime() * 0.08) * 0.04 + scrollVal * 0.2;
     }
   });
 
@@ -88,14 +89,14 @@ function SkillsSphere({ radius = 4.2 }) {
   );
 }
 
-const Skills = () => {
+const Skills = ({ progress }) => {
   return (
     <>
       <ambientLight intensity={0.7} />
       <directionalLight position={[0, 0, 5]} intensity={1} />
       <Stars radius={90} depth={40} count={700} factor={3} saturation={0.5} fade speed={1.2} />
-      <SkillsSphere />
-      <OrbitControls enableZoom={false} enablePan={false} autoRotate={false} />
+      <SkillsSphere progress={progress} />
+      {!isMobile && <OrbitControls enableZoom={false} enablePan={false} autoRotate={false} />}
     </>
   );
 };
