@@ -6,7 +6,7 @@ import { useGSAP } from '@gsap/react'
 
 const Projects = ({ progress, idx }) => {
   const domRefs = useRef([]);
-  const isMobileRef = useRef(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const projects = [
     { id: 1, title: "AI Note Saver", description: "AI-powered note management application that lets users create, organize, summarize, rewrite, and enhance notes using Llama 3.3 AI.", features: ["🔐 JWT Auth", "🤖 AI Suggestions", "✏️ AI Rewrite", "📝 Note Management", "🌙 Light/Dark Mode", "📱 Responsive UI",], techstack: ["React", "Express.js", "Node.js", "Tailwind CSS", "Groq API", "Vercel AI SDK", "Llama 3.3",], github:"https://github.com", live:"https://vercel.app" },
@@ -39,12 +39,13 @@ const Projects = ({ progress, idx }) => {
   const carouselRef = useRef();
 
   useGSAP(() => {
+    const targetX = isMobile ? -(idx - 1) * 3.2 : -idx * 3.2;
     gsap.to(carouselRef.current.position, {
-      x: -idx * 3.2,
+      x: targetX,
       duration: 0.8,
       ease: "power2.out"
     });
-  }, [idx]);
+  }, [idx, isMobile]);
 
   useEffect(() => {
     domRefs.current = domRefs.current.slice(0, projects.length);
@@ -53,10 +54,10 @@ const Projects = ({ progress, idx }) => {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const mq = window.matchMedia('(max-width: 768px)');
+    setIsMobile(mq.matches);
     const setMobile = (ev) => {
-      isMobileRef.current = ev.matches;
+      setIsMobile(ev.matches);
     };
-    setMobile(mq);
     mq.addEventListener?.('change', setMobile);
     return () => mq.removeEventListener?.('change', setMobile);
   }, []);
@@ -78,7 +79,7 @@ const Projects = ({ progress, idx }) => {
 
   const tilt = (e, index) => {
     // disable tilt on mobile
-    if (isMobileRef.current) return;
+    if (isMobile) return;
     const el = domRefs.current[index];
     if (!el || progress.current.value < 0.95) return;
 
@@ -98,7 +99,7 @@ const Projects = ({ progress, idx }) => {
   };
 
   const resetTilt = (e, index) => {
-    if (isMobileRef.current) return;
+    if (isMobile) return;
     if (e.relatedTarget && e.currentTarget.contains(e.relatedTarget)) return;
     const el = domRefs.current[index];
     if (!el || progress.current.value < 0.95) return;

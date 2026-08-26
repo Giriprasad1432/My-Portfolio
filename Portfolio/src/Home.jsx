@@ -97,10 +97,18 @@ const Home = ({ startAnimation }) => {
         ScrollTrigger.clearScrollMemory();
         ScrollTrigger.refresh(true);
       }, 10);
+
+      const handleResize = () => {
+        const isMobile = window.innerWidth < 768;
+        const maxIdx = isMobile ? 3 : 1;
+        setIdx((prev) => Math.min(prev, maxIdx));
+      };
+      window.addEventListener('resize', handleResize);
+      return () => {
+        window.removeEventListener('resize', handleResize);
+        document.body.style.overflow = "auto";
+      };
     }
-    return () => {
-      document.body.style.overflow = "auto";
-    };
   }, []);
 
   useGSAP(() => {
@@ -229,7 +237,9 @@ const Home = ({ startAnimation }) => {
   }
   
   const handleRight=()=>{
-    if(idx+3>=4)
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const maxIdx = isMobile ? 3 : 1;
+    if(idx >= maxIdx)
       return;
     setIdx(idx+1)
   }
