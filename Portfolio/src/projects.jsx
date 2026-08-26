@@ -131,7 +131,7 @@ const Projects = ({ progress, idx }) => {
                 className="pointer-events-auto text-center text-white group relative overflow-hidden backface-hidden w-[420px] h-[600px]  md:w-[500px] md:h-[600px] flex items-center flex-col p-4 border border-cyan-400/30 bg-slate-800 rounded-3xl shadow-xl shadow-cyan-500/10"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-700/80 via-slate-800/60 to-cyan-700/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-                <h1 className="relative z-10 text-4xl font-bold pointer-events-none bg-gradient-to-r from-indigo-300 via-violet-300 to-cyan-300 bg-clip-text text-transparent leading-tight ">{p.title}</h1>
+                <h1 className={`relative z-10 font-bold pointer-events-none bg-gradient-to-r from-indigo-300 via-violet-300 to-cyan-300 bg-clip-text text-transparent leading-tight ${p.id === 3 ? 'text-[28px] md:text-4xl' : 'text-4xl'}`}>{p.title}</h1>
                 <div className='py-5 px-2 w-full max-h-[150px] overflow-clip pointer-events-none'>
                   <p className={`relative z-10 text-lg line-clamp-3 leading-normal transition-colors duration-700 ${hoveredIndex === index ? "text-white" : "text-slate-300"}`}>
                     {p.description}
@@ -153,7 +153,7 @@ const Projects = ({ progress, idx }) => {
                     </li>
                   ))}
                 </ul>
-                <div className="flex justify-between w-full px-12 py-2 z-20 absolute bottom-8 ">
+                <div className="flex justify-between w-full px-12 py-2 z-20 absolute bottom-2 ">
                   <button className="cursor-pointer relative z-10 border border-white/10 bg-white/10 hover:bg-white/20 text-white rounded-3xl px-6 py-2 text-base font-medium transition-all duration-300 backdrop-blur-sm"><a href={p.github} >Github</a></button>
                   <button className="cursor-pointer relative z-10 border border-indigo-400/50 bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-400 hover:to-cyan-400 text-white rounded-3xl px-6 py-2 text-base font-medium transition-all duration-300 shadow-lg shadow-indigo-500/30"><a href={p.live} >Live</a></button>
                 </div>
