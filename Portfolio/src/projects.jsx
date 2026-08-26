@@ -9,14 +9,14 @@ const Projects = ({ progress, idx }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const projects = [
-    { id: 1, title: "AI Note Saver", description: "AI-powered note management application that lets users create, organize, summarize, rewrite, and enhance notes using Llama 3.3 AI.", features: ["🔐 JWT Auth", "🤖 AI Suggestions", "✏️ AI Rewrite", "📝 Note Management", "🌙 Light/Dark Mode", "📱 Responsive UI",], techstack: ["React", "Express.js", "Node.js", "Tailwind CSS", "Groq API", "Vercel AI SDK", "Llama 3.3",], github:"https://github.com", live:"https://vercel.app" },
+    { id: 1, title: "AI Note Saver", description: "AI-powered note management application that lets users create, organize, summarize, rewrite, and enhance notes using Llama 3.3 AI.", features: ["🔐 JWT Auth", "🤖 AI Suggestions", "✏️ AI Rewrite", "📝 Note Management", "🌙 Light/Dark Mode", "📱 Responsive UI",], techstack: ["React", "Express.js", "Node.js", "Tailwind CSS", "Groq API", "Vercel AI SDK", "Llama 3.3",], github:"https://github.com/Giriprasad1432/AI-Notes-Workspace", live:"https://ai-notes-workspace-flax.vercel.app/" },
     {
       id: 2,
       title: "Blog Application",
       description: "Modern full-stack blogging platform where users can create, edit, delete, and browse blog posts with a clean and responsive interface.",
       features: ["✍️ Create Blogs", "📝 Edit & Delete Posts", "🔍 Browse Articles", "⚡ Fast Navigation", "📱 Responsive UI", "🎨 Modern Design"],
       techstack: ["React", "TanStack Query", "Tailwind CSS", "JavaScript"],
-      github:"", live:""
+      github:"https://github.com/Giriprasad1432/Frontend-Interview", live:"https://frontend-interview-lovat.vercel.app/"
     },
     {
       id: 3,
@@ -24,7 +24,7 @@ const Projects = ({ progress, idx }) => {
       description: "AI-powered career guidance platform that provides personalized career recommendations through dynamic questionnaires using Llama 3.3.",
       features: ["🤖 AI Career Guidance", "📋 Dynamic Questionnaire", "🎯 Personalized Recommendations", "⚡ Fast API Backend", "📊 Career Analysis", "🌐 Responsive Interface"],
       techstack: ["Python", "FastAPI", "Groq API", "Llama 3.3", "HTML", "CSS", "JavaScript"],
-      github:"", live:""
+      github:"https://github.com/Giriprasad1432/TEAM-57", live:""
     },
     {
       id: 4,
@@ -32,7 +32,7 @@ const Projects = ({ progress, idx }) => {
       description: "Full-stack MERN application developed as a team project with secure authentication, scalable APIs, an interactive 3D experience, and cloud deployment.",
       features: ["🔐 User Authentication", "📊 Dashboard", "🌐 REST APIs", "🎮 Interactive 3D Models", "☁️ Render Deployment", "📱 Responsive Design"],
       techstack: ["MongoDB", "Express.js", "React", "Node.js", "Tailwind CSS", "Blender", "Three.js"],
-      github:"", live:""
+      github:"https://github.com/Giriprasad1432/DTI", live:"https://dti-j286.onrender.com/"
     }
   ];
 
@@ -155,7 +155,7 @@ const Projects = ({ progress, idx }) => {
                 </ul>
                 <div className="flex justify-between w-full px-12 py-2 z-20 absolute bottom-2 ">
                   <button className="cursor-pointer relative z-10 border border-white/10 bg-white/10 hover:bg-white/20 text-white rounded-3xl px-6 py-2 text-base font-medium transition-all duration-300 backdrop-blur-sm"><a href={p.github} >Github</a></button>
-                  <button className="cursor-pointer relative z-10 border border-indigo-400/50 bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-400 hover:to-cyan-400 text-white rounded-3xl px-6 py-2 text-base font-medium transition-all duration-300 shadow-lg shadow-indigo-500/30"><a href={p.live} >Live</a></button>
+                  <button disabled={!p.live} className={`cursor-pointer relative z-10 border border-indigo-400/50 bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-400 hover:to-cyan-400 text-white rounded-3xl px-6 py-2 text-base font-medium transition-all duration-300 shadow-lg shadow-indigo-500/30 ${!p.live ? "opacity-50 cursor-not-allowed" : ""}`}><a href={p.live} >Live</a></button>
                 </div>
               </div>
             </Html>
